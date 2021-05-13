@@ -1,6 +1,7 @@
 import {Body, Controller, Get, Param, Post} from '@nestjs/common';
 import {RolesService} from "./roles.service";
 import {CreateRoleDto} from "./dto/create-role.dto";
+import {Role} from "./roles.model";
 
 @Controller('roles')
 export class RolesController {
@@ -8,12 +9,12 @@ export class RolesController {
   }
 
   @Post()
-  create(@Body() dto: CreateRoleDto) {
+  create(@Body() dto: CreateRoleDto): Promise<Role> {
     return this.roleService.createRole(dto);
   }
 
   @Get('/:value')
-  getByValue(@Param('value') value: string) {
+  getByValue(@Param('value') value: string): Promise<Role> {
     return this.roleService.getRoleByValue(value);
   }
 }

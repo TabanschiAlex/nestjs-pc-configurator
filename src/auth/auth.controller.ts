@@ -8,12 +8,12 @@ export class AuthController {
   }
 
   @Post('login')
-  login(@Body() userDto: CreateUserDto) {
+  login(@Body() userDto: CreateUserDto): Promise<{ token: string }> {
     return this.authService.login(userDto);
   }
 
   @Post('register')
-  register(@Body() userDto: CreateUserDto) {
+  register(@Body() userDto: CreateUserDto): Promise<{ token: string }> {
     return this.authService.register(userDto);
   }
 }

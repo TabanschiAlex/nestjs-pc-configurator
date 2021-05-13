@@ -10,11 +10,11 @@ export class AuthService {
   constructor(private userService: UsersService, private jwtService: JwtService) {
   }
 
-  async login(userDto: CreateUserDto) {
+  async login(userDto: CreateUserDto): Promise<{ token: string }> {
     return this.generateToken(await this.validateUser(userDto));
   }
 
-  async register(userDto: CreateUserDto) {
+  async register(userDto: CreateUserDto): Promise<{ token: string }> {
     if (await this.userService.getUserByEmail(userDto.email)) {
       throw new HttpException('User with this email already exist', HttpStatus.BAD_REQUEST);
     }
@@ -25,20 +25,20 @@ export class AuthService {
     return this.generateToken(user);
   }
 
-  private async generateToken(user: User) {
+  private async generateToken(user: User): Promise<{ token: string }> {
     const payload = {id: user.id, email: user.email, roles: user.roles};
 
     return {token: this.jwtService.sign(payload)};
   }
 
-  private async validateUser(userDto: CreateUserDto) {
+  private async validateUser(userDto: CreateUserDto): Promise<User> {
     const user = await this.userService.getUserByEmail(userDto.email);
     const password = await bcrypt.compare(userDto.password, user.password);
 
-    if (user && password) {
-      return user;
+    if (!user && !password) {
+      throw new UnauthorizedException({message: 'Invalid email or password'});
     }
 
-    throw new UnauthorizedException({message: 'Invalid email or password'});
+    return user;
   }
 }
