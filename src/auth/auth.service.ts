@@ -14,7 +14,7 @@ export class AuthService {
     return this.generateToken(await this.validateUser(userDto));
   }
 
-  async register(userDto: CreateUserDto): Promise<{ token: string }> {
+  async register(userDto: CreateUserDto) {
     if (await this.userService.getUserByEmail(userDto.email)) {
       throw new HttpException('User with this email already exist', HttpStatus.BAD_REQUEST);
     }
@@ -22,13 +22,12 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(userDto.password, 5);
     const user = await this.userService.createUser({...userDto, password: hashedPassword});
 
-    return this.generateToken(user);
+    return await this.generateToken(user);
   }
 
   private async generateToken(user: User): Promise<{ token: string }> {
-    const payload = {id: user.id, email: user.email, roles: user.roles};
-
-    return {token: this.jwtService.sign(payload)};
+    const payload = {id: user.id, email: user.email, role: user.role_id};
+    return {token: await this.jwtService.sign(payload)};
   }
 
   private async validateUser(userDto: CreateUserDto): Promise<User> {

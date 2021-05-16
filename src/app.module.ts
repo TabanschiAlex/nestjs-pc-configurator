@@ -4,6 +4,11 @@ import {SequelizeModule} from "@nestjs/sequelize";
 import {UsersModule} from './users/users.module';
 import {RolesModule} from './roles/roles.module';
 import {AuthModule} from './auth/auth.module';
+import {User} from "./users/users.model";
+import {Role} from "./roles/roles.model";
+import { ConfiguratorModule } from './configurator/configurator.module';
+import { ComponentsModule } from './components/components.module';
+
 
 @Module({
   imports: [
@@ -17,12 +22,15 @@ import {AuthModule} from './auth/auth.module';
       username: process.env.SQL_NAME,
       password: process.env.SQL_PASS,
       database: process.env.SQL_DB,
-      models: [],
-      autoLoadModels: true
+      models: [User, Role],
+      autoLoadModels: true,
+      synchronize: true
     }),
     UsersModule,
     RolesModule,
     AuthModule,
+    ConfiguratorModule,
+    ComponentsModule,
   ]
 })
 export class AppModule {
