@@ -1,4 +1,5 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import {Column, DataType, HasMany, Model, Table} from "sequelize-typescript";
+import {Cpu} from "../components/cpu.components.model";
 
 interface SocketCreationAttrs {
   name: string;
@@ -11,4 +12,7 @@ export class Socket extends Model<Socket, SocketCreationAttrs> {
 
   @Column({type: DataType.STRING, unique: true, allowNull: false})
   name: string;
+
+  @HasMany(() => Cpu)
+  cpu: Cpu[];
 }

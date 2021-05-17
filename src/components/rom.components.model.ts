@@ -1,5 +1,6 @@
-import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
-import {Socket} from "../configurator/socket.configurator.model";
+import {BelongsToMany, Column, DataType, Model, Table} from "sequelize-typescript";
+import {Configurator} from "../configurator/configurator.model";
+import {RomConfig} from "../configurator/rom-config.configurator.model";
 
 interface RomCreationAttrs {
   manufacturer: string;
@@ -36,4 +37,7 @@ export class Rom extends Model<Rom, RomCreationAttrs> {
 
   @Column({type: DataType.STRING, defaultValue: `${process.env.HOST || 'localhost'}/images/noImage.png`})
   photo: string;
+
+  @BelongsToMany(() => Configurator, () => RomConfig)
+  rom_config: RomConfig[];
 }

@@ -1,5 +1,7 @@
-import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
+import {BelongsTo, BelongsToMany, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {Socket} from "../configurator/socket.configurator.model";
+import {CpuConfig} from "../configurator/cpu-config.configurator.model";
+import {Configurator} from "../configurator/configurator.model";
 
 interface CpuCreationAttrs {
   manufacturer: string;
@@ -38,9 +40,12 @@ export class Cpu extends Model<Cpu, CpuCreationAttrs> {
   photo: string;
 
   @ForeignKey(() => Socket)
-  @Column
+  @Column({type: DataType.INTEGER})
   socket_id: number;
 
   @BelongsTo(() => Socket)
   socket: Socket;
+
+  @BelongsToMany(() => Configurator, () => CpuConfig)
+  cpu_config: CpuConfig[];
 }

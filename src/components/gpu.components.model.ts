@@ -1,5 +1,6 @@
-import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
-import {Socket} from "../configurator/socket.configurator.model";
+import {BelongsToMany, Column, DataType, Model, Table} from "sequelize-typescript";
+import {Configurator} from "../configurator/configurator.model";
+import {GpuConfig} from "../configurator/gpu-config.configurator.model";
 
 interface GpuCreationAttrs {
   manufacturer: string;
@@ -40,4 +41,7 @@ export class Gpu extends Model<Gpu, GpuCreationAttrs> {
 
   @Column({type: DataType.STRING, defaultValue: `${process.env.HOST || 'localhost'}/images/noImage.png`})
   photo: string;
+
+  @BelongsToMany(() => Configurator, () => GpuConfig)
+  gpu_config: GpuConfig[];
 }

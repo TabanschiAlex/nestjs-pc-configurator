@@ -1,6 +1,7 @@
-import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
+import {BelongsTo, Column, DataType, ForeignKey, HasOne, Model, Table} from "sequelize-typescript";
 import {Socket} from "../configurator/socket.configurator.model";
 import {Format} from "../configurator/format.configurator.model";
+import {Configurator} from "../configurator/configurator.model";
 
 interface MotherboardCreationAttrs {
   manufacturer: string;
@@ -69,4 +70,7 @@ export class Motherboard extends Model<Motherboard, MotherboardCreationAttrs> {
 
   @BelongsTo(() => Format)
   format: Format;
+
+  @HasOne(() => Configurator)
+  config: Configurator;
 }

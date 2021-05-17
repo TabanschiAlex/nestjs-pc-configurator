@@ -1,6 +1,5 @@
-import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
-import {Socket} from "../configurator/socket.configurator.model";
-import {Format} from "../configurator/format.configurator.model";
+import {Column, DataType, HasOne, Model, Table} from "sequelize-typescript";
+import {Configurator} from "../configurator/configurator.model";
 
 interface MonitorCreationAttrs {
   manufacturer: string;
@@ -33,4 +32,7 @@ export class Monitor extends Model<Monitor, MonitorCreationAttrs> {
 
   @Column({type: DataType.STRING, defaultValue: `${process.env.HOST || 'localhost'}/images/noImage.png`})
   photo: string;
+
+  @HasOne(() => Configurator)
+  config: Configurator;
 }

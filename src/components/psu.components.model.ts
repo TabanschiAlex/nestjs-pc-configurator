@@ -1,5 +1,5 @@
-import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
-import {Socket} from "../configurator/socket.configurator.model";
+import {Column, DataType, HasOne, Model, Table} from "sequelize-typescript";
+import {Configurator} from "../configurator/configurator.model";
 
 interface PsuCreationAttrs {
   manufacturer: string;
@@ -28,4 +28,7 @@ export class Psu extends Model<Psu, PsuCreationAttrs> {
 
   @Column({type: DataType.STRING, defaultValue: `${process.env.HOST || 'localhost'}/images/noImage.png`})
   photo: string;
+
+  @HasOne(() => Configurator)
+  config: Configurator;
 }

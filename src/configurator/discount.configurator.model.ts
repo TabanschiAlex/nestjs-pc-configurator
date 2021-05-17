@@ -1,4 +1,5 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import {Column, DataType, HasOne, Model, Table} from "sequelize-typescript";
+import {Configurator} from "./configurator.model";
 
 interface DiscountCreationAttrs {
   name: string;
@@ -17,4 +18,7 @@ export class Discount extends Model<Discount, DiscountCreationAttrs> {
 
   @Column({type: DataType.BOOLEAN, defaultValue: true})
   is_active: boolean;
+
+  @HasOne(() => Configurator)
+  config: Configurator;
 }

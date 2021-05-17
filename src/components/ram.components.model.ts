@@ -1,6 +1,6 @@
-import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
-import {Socket} from "../configurator/socket.configurator.model";
+import {BelongsToMany, Column, DataType, Model, Table} from "sequelize-typescript";
 import {RamConfig} from "../configurator/ram-config.configurator.model";
+import {Configurator} from "../configurator/configurator.model";
 
 interface RamCreationAttrs {
   manufacturer: string;
@@ -37,4 +37,7 @@ export class Ram extends Model<Ram, RamCreationAttrs> {
 
   @Column({type: DataType.STRING, defaultValue: `${process.env.HOST || 'localhost'}/images/noImage.png`})
   photo: string;
+
+  @BelongsToMany(() => Configurator, () => RamConfig)
+  ram_config: RamConfig[];
 }

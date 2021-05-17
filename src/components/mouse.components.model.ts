@@ -1,6 +1,5 @@
-import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
-import {Socket} from "../configurator/socket.configurator.model";
-import {Format} from "../configurator/format.configurator.model";
+import {Column, DataType, HasOne, Model, Table} from "sequelize-typescript";
+import {Configurator} from "../configurator/configurator.model";
 
 interface MouseCreationAttrs {
   manufacturer: string;
@@ -11,7 +10,7 @@ interface MouseCreationAttrs {
   photo: string;
 }
 
-@Table({tableName: 'monitor'})
+@Table({tableName: 'mouse'})
 export class Mouse extends Model<Mouse, MouseCreationAttrs> {
   @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
   id: number;
@@ -33,4 +32,7 @@ export class Mouse extends Model<Mouse, MouseCreationAttrs> {
 
   @Column({type: DataType.STRING, defaultValue: `${process.env.HOST || 'localhost'}/images/noImage.png`})
   photo: string;
+
+  @HasOne(() => Configurator)
+  config: Configurator;
 }
