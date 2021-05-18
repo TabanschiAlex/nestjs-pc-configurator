@@ -10,7 +10,11 @@ export class AuthService {
   constructor(private userService: UsersService, private jwtService: JwtService) {
   }
 
-  async login(userDto: CreateUserDto): Promise<{ token: string }> {
+  async login(userDto: CreateUserDto): Promise<{ username: string; token: string }> {
+    if (!userDto.email || !userDto.password) {
+      throw new HttpException('Insufficient data to process', HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
     return this.generateToken(await this.validateUser(userDto));
   }
 
@@ -25,16 +29,16 @@ export class AuthService {
     return await this.generateToken(user);
   }
 
-  private async generateToken(user: User): Promise<{ token: string }> {
+  private async generateToken(user: User): Promise<{ username: string; token: string }> {
     const payload = {id: user.id, email: user.email, role: user.role_id};
-    return {token: await this.jwtService.sign(payload)};
+    return {username: user.name, token: await this.jwtService.sign(payload)};
   }
 
   private async validateUser(userDto: CreateUserDto): Promise<User> {
     const user = await this.userService.getUserByEmail(userDto.email);
     const password = await bcrypt.compare(userDto.password, user.password);
 
-    if (!user && !password) {
+    if (!user || !password) {
       throw new UnauthorizedException({message: 'Invalid email or password'});
     }
 
