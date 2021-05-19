@@ -21,6 +21,7 @@ import {Socket} from "./socket.configurator.model";
 import {Format} from "./format.configurator.model";
 import {Discount} from "./discount.configurator.model";
 import {Configurator} from "./configurator.model";
+import {AuthModule} from "../auth/auth.module";
 
 @Module({
   controllers: [ConfiguratorController],
@@ -39,7 +40,8 @@ import {Configurator} from "./configurator.model";
         Discount, Configurator
       ]
     ),
-    ComponentsModule
+    ComponentsModule,
+    AuthModule
   ]
 })
 export class ConfiguratorModule {

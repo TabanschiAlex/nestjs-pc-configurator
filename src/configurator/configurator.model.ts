@@ -16,9 +16,12 @@ import {Keyboard} from "../components/keyboard.components.model";
 import {Mouse} from "../components/mouse.components.model";
 import {Discount} from "./discount.configurator.model";
 
+interface ConfiguratorCreationAttrs {
+  user_id: number;
+}
 
 @Table({tableName: 'config'})
-export class Configurator extends Model<Configurator> {
+export class Configurator extends Model<Configurator, ConfiguratorCreationAttrs> {
   @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
   id: number;
 
@@ -95,4 +98,19 @@ export class Configurator extends Model<Configurator> {
 
   @BelongsToMany(() => Ram, () => RamConfig)
   ram_config: Ram[];
+
+  @BelongsTo(() => Case)
+  case: Case;
+
+  @BelongsTo(() => Psu)
+  psu: Psu;
+
+  @BelongsTo(() => Monitor)
+  monitor: Monitor;
+
+  @BelongsTo(() => Keyboard)
+  keyboard: Keyboard;
+
+  @BelongsTo(() => Mouse)
+  mouse: Mouse;
 }
