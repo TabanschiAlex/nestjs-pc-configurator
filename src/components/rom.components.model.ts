@@ -35,7 +35,7 @@ export class Rom extends Model<Rom, RomCreationAttrs> {
   @Column({type: DataType.DECIMAL(6, 2), allowNull: false})
   price: number;
 
-  @Column({type: DataType.STRING, defaultValue: `${process.env.HOST || 'localhost'}/images/noImage.png`})
+  @Column({type: DataType.STRING, defaultValue: 'https://iscr.ru/images/2021/02/10/noimages.jpg'})
   photo: string;
 
   @BelongsToMany(() => Configurator, () => RomConfig)

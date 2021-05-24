@@ -22,6 +22,17 @@ export class ConfiguratorService {
         where: {
           user_id: req.user.id
         },
+        attributes: ['id']
+      });
+  }
+
+  async getConfigById(id): Promise<Configurator> {
+    return await this.configuratorRepository.findOne(
+      {
+        where: {
+          id: id
+        },
+        attributes: ['id', 'user_id', 'total_price', 'discount_price'],
         include: [
           Cpu, Gpu, Rom,
           Ram, Motherboard,
@@ -36,7 +47,7 @@ export class ConfiguratorService {
     return await this.getConfigs(req);
   }
 
-  addComponent() {
-    return this.configuratorRepository;
+  addComponent(body) {
+    return this.configuratorRepository.update(body.component, body.id);
   }
 }

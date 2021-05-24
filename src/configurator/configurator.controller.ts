@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Post, Req, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Req, UseGuards} from '@nestjs/common';
 import {ConfiguratorService} from "./configurator.service";
 import {JwtAuthGuard} from "../auth/jwt.auth.guard";
 import {Configurator} from "./configurator.model";
@@ -10,10 +10,14 @@ export class ConfiguratorController {
   constructor(private configuratorService: ConfiguratorService) {
   }
 
-
   @Get()
   getAllConfigs(@Req() req: Request): Promise<Configurator[]> {
     return this.configuratorService.getConfigs(req);
+  }
+
+  @Get('/:id')
+  getConfigById(@Param('id') id): Promise<Configurator> {
+    return this.configuratorService.getConfigById(id);
   }
 
   @Post()
@@ -21,9 +25,9 @@ export class ConfiguratorController {
     return this.configuratorService.createConfig(req);
   }
 
-  @Post()
-  addComponent(@Body() a) {
-    return this.configuratorService.addComponent();
+  @Post('add')
+  addComponent(@Body() body) {
+    return this.configuratorService.addComponent(body);
   }
 
   @Delete()

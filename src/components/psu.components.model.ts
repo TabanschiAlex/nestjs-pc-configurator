@@ -20,13 +20,13 @@ export class Psu extends Model<Psu, PsuCreationAttrs> {
   @Column({type: DataType.STRING, allowNull: false})
   model: string;
 
-  @Column({type: DataType.TINYINT, allowNull: false})
+  @Column({type: DataType.SMALLINT, allowNull: false})
   power: number;
 
   @Column({type: DataType.DECIMAL(6, 2), allowNull: false})
   price: number;
 
-  @Column({type: DataType.STRING, defaultValue: `${process.env.HOST || 'localhost'}/images/noImage.png`})
+  @Column({type: DataType.STRING, defaultValue: 'https://iscr.ru/images/2021/02/10/noimages.jpg'})
   photo: string;
 
   @HasOne(() => Configurator)

@@ -12,7 +12,6 @@ export class UsersController {
   constructor(private usersService: UsersService) {
   }
 
-
   @Get()
   getAllUsers(): Promise<User[]> {
     return this.usersService.getAllUsers();
