@@ -32,12 +32,17 @@ export class ConfiguratorService {
         where: {
           id: id
         },
-        attributes: ['id', 'user_id', 'total_price', 'discount_price'],
+        attributes: [
+          'id',
+          'user_id',
+          'total_price',
+          'discount_price',
+        ],
         include: [
           Cpu, Gpu, Rom,
           Ram, Motherboard,
           Psu, Case, Monitor,
-          Keyboard, Mouse
+          Keyboard, Mouse,
         ]
       });
   }
@@ -47,7 +52,14 @@ export class ConfiguratorService {
     return await this.getConfigs(req);
   }
 
-  addComponent(body) {
-    return this.configuratorRepository.update(body.component, body.id);
+  async addComponent(body) {
+    switch (body.category) {
+      case 'motherboard': return await this.configuratorRepository.update({'motherboard_id': body.component}, {where: {id: body.id}});
+      case 'psu': return await this.configuratorRepository.update({'psu_id': body.component}, {where: {id: body.id}});
+      case 'monitor': return await this.configuratorRepository.update({'monitor_id': body.component}, {where: {id: body.id}});
+      case 'keyboard': return await this.configuratorRepository.update({'keyboard_id': body.component}, {where: {id: body.id}});
+      case 'case': return await this.configuratorRepository.update({'case_id': body.component}, {where: {id: body.id}});
+      case 'mouse': return await this.configuratorRepository.update({'mouse_id': body.component}, {where: {id: body.id}});
+    }
   }
 }
